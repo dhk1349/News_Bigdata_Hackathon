@@ -19,7 +19,7 @@ def detect(keyword,start):
     today=now.strftime('%Y-%m-%d')
     url4="http://tools.kinds.or.kr:8888/time_line"
     payload4={
-            "access_key": "My Private Access Key!!!",
+            "access_key": "18694feb-ec22-408a-8f68-2947156608cb",
             "argument": {
                     "query": keyword,
                     "published_at": {
@@ -46,4 +46,5 @@ def detect(keyword,start):
         if(i['hits']>=20):
             newtimeline.append(i)
     #print(newtimeline)
-    return(newtimeline)
+    print("timeline finished")
+    return newtimeline

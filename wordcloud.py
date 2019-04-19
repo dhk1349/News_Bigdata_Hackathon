@@ -19,7 +19,7 @@ def getwordcloud(keyword,date):
     '''
     url3="http://tools.kinds.or.kr:8888/word_cloud"
     payload3={
-            "access_key": "My Private Access Key!!!",
+            "access_key": "18694feb-ec22-408a-8f68-2947156608cb",
             "argument": {
                     "query": keyword,
                     "published_at": {
