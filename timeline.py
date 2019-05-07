@@ -19,7 +19,7 @@ def detect(keyword,start):
     today=now.strftime('%Y-%m-%d')
     url4="http://tools.kinds.or.kr:8888/time_line"
     payload4={
-            "access_key": "18694feb-ec22-408a-8f68-2947156608cb",
+            "access_key": "c1e3b1cd-8d4c-4a6e-ba5c-d77a2c70e87b",
             "argument": {
                     "query": keyword,
                     "published_at": {
@@ -43,8 +43,8 @@ def detect(keyword,start):
     timeline=timeline.json()['return_object']['time_line']
     newtimeline=[]
     for i in timeline:
-        if(i['hits']>=20):
+        if(i['hits']>=10):
             newtimeline.append(i)
     #print(newtimeline)
-    print("timeline finished")
+    print("timeline finished",len(newtimeline))
     return newtimeline

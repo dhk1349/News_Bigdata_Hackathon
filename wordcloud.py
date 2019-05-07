@@ -16,10 +16,13 @@ def getwordcloud(keyword,date):
 
     딕셔너리 타입을 원소로 갖는 리스트를 리턴한다.
     딕셔너리는 id, name, level, weight를 값으로 가진다.
+    
+    weight가 가장 높은 키워드 10개가 가중치와 함께 리턴되며, 만약에 키워드가 10개 미만이면
+    그 만큼만 리턴한다.
     '''
     url3="http://tools.kinds.or.kr:8888/word_cloud"
     payload3={
-            "access_key": "18694feb-ec22-408a-8f68-2947156608cb",
+            "access_key": "c1e3b1cd-8d4c-4a6e-ba5c-d77a2c70e87b",
             "argument": {
                     "query": keyword,
                     "published_at": {
@@ -43,10 +46,12 @@ def getwordcloud(keyword,date):
     wordcloud=wordcloud.json()['return_object']['nodes']
     wordcloud=sorted(wordcloud,key=lambda wordcloud:(wordcloud['weight']),reverse=True)
     newlist=[]
-    for i in wordcloud:
-        i.pop('id')
-        i.pop('level')
-        newlist.append(i)
-    #print(newlist)
+    endpoint=10
+    if(len(wordcloud)<endpoint):
+        endpoint=len(wordcloud)
+    for i in range(0,endpoint):
+        temp={wordcloud[i]['name']:wordcloud[i]['weight']}
+        newlist.append(temp)
+    
     return newlist
     
