@@ -103,8 +103,76 @@ def keyword_Integrate(timeline, keywordlist):
                     #print("weight added",key,value,"->",weightbox[key])
         weightbox=sorted(weightbox.items(),key=operator.itemgetter(1),reverse=True)
         result.append(weightbox)
-    #print(result)
+    print(result)
     return result
+
+
+def prior(final_lst):
+    '''
+    기간 가중처리가 된 리스트를 input으로 받는다.
+    별로 키워드를 합쳐서 순서를 매긴 리스트를 리턴
+    맨 앞과 뒤는 가중치 합을 계산하비 않는다(무조건 내보낼 것)
+    딕셔너리 대신 가중치의 합이 들어간다.
+    예시)
+    [기간, 가중치 합,  기간 가중치 합]
+    '''
+    #(final_lst)
+    prior=[None]*len(final_lst)
+    for i in range(0,len(final_lst)):
+        prior[i]=final_lst[i]
+    prior[1]=0
+    #print(prior)
+    
+    for i in range(3,len(final_lst),2):
+        if(i%2!=0):
+            prior[i]=sum(final_lst[i].values())
+    #prior[len(final_lst)-2]=final_lst[len(final_lst)-2]
+    #prior[len(final_lst)-1]=final_lst[len(final_lst)-1]
+    result_lst=prior
+    for j in range(3,len(final_lst)-2,2):    #가충치 합만 보면서 지나감
+        maxnum=0
+        indexnum=0
+        for i in range(3,len(final_lst)-2,2):
+            if(prior[i]>maxnum):
+                maxnum=prior[i]                 #가장 큰 가중치 갱신
+                indexnum=i                      #가장 큰 가중치의 인덱스
+            if(i==len(final_lst)-3):#마지막 인텍스일 때
+                prior[indexnum]=0
+                result_lst[indexnum]=(j-1)/2
+    #print(result_lst)
+    return result_lst
+
+
+
+def converter(prior_lst, final_lst,number):
+    '''
+    가중치 합 순으로 정한 우선순위 순으로 필요없는 기간은  삭제
+    '''
+    iterator=len(final_lst)
+    if(number<iterator):
+        iterator=number
+    revised=[None]*(2*iterator)
+    revised[0]=final_lst[0]
+    revised[1]=final_lst[1]
+    revised[2*iterator-1]=final_lst[len(final_lst)-1]
+    revised[2*iterator-2]=final_lst[len(final_lst)-2]
+    print(revised)
+    count=1
+    for i in range(3,2*iterator-2,2):
+        for j in range(3,len(final_lst)-2,2):
+            if(prior_lst[j]==count):
+                revised[i-1]=final_lst[j-1]
+                revised[i]=final_lst[j]
+                count+=1
+                break
+    
+    #print(revised)
+    return revised 
+'''
+temp=['a',{'a':10,'v':22},'c',{'l':10,'t':9},'b',{'a':1,'r':1},'g',{'k':10,'o':9},'b',{'h':19,'l':666}]
+priorlst=prior(temp)        
+converter(priorlst,temp,4)
+'''
 
 def Newssearch(searchword,final_list):
     start=""
@@ -123,29 +191,24 @@ def Newssearch(searchword,final_list):
             words.append(i[1][0])
             words.append(i[2][0])
             article=search(start,end,words)
-            print("======================================\n")
-            print(article)
-            print("======================================\n")
             result.append(words)
             result.append(article)
         count=count+1
     return result
+    
+
 def GetNews(keyword,start):
+    
     keywordlist=keywordextract(keyword,start)    #모든 날짜와 날짜 별 키워드+가중치들이 있는 리스트
+    
     timeline=phasedivide(keyword,keywordlist)    #기간을 나눌 인덱스
     final_list=keyword_Integrate(timeline,keywordlist)
+    #prior_lst=prior(final_list)
+    #inputlst=prior(prior_lst,final_list,10)
     article=Newssearch(keyword, final_list)
     
     
-    testfile=open("articel.txt",'w')
-    for i in range(0,len(article)):
-        testfile.write("==========================================\n")
-
-        for j in article[i]:
-            testfile.write(j)
-            testfile.write("\n")
-    testfile.close()
-    return 0
+    return article
 
 
     

@@ -13,12 +13,6 @@ from timeline import detect
 from wordcloud import getwordcloud
 from time_divide import phasedivide ,keywordextract, GetNews
 
-#print(detect("김학의","2016-01-01"))
-
-#keywordextract("버닝썬","2019-01-01")
-#keywordextract("김학의","2018-12-01")
-
-#GetNews("김학의","2018-12-01")    
+   
 
 GetNews("버닝썬","2019-01-01")
-#print(phasedivide("버닝썬",keywordextract("버닝썬","2019-01-01")))

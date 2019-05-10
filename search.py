@@ -42,6 +42,8 @@ def search(start, end,word):
     searcharticle=requests.post(url,json=payload)
     searcharticle=searcharticle.json()['return_object']['documents']
     contentresult=[]
+    print("==============================================================================================")
+    print("키워드 : ",word[1],",",word[2],", ",word[3],"\n")
     for i in searcharticle:
         del i['news_id']
         del i['published_at']
@@ -53,6 +55,7 @@ def search(start, end,word):
         print(x1+"\n"+x2)
         x1=x1+"\n"+x2+"\n\n"
         contentresult.append(x1)
+    print("==============================================================================================")
     return contentresult
 
     
