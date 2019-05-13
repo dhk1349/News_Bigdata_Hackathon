@@ -103,7 +103,7 @@ def keyword_Integrate(timeline, keywordlist):
                     #print("weight added",key,value,"->",weightbox[key])
         weightbox=sorted(weightbox.items(),key=operator.itemgetter(1),reverse=True)
         result.append(weightbox)
-    print(result)
+    #print(result)
     return result
 
 
@@ -159,17 +159,13 @@ def converter(prior_lst, final_lst,number):
     revised[1]=final_lst[1]
     revised[2*iterator-1]=final_lst[len(final_lst)-1]
     revised[2*iterator-2]=final_lst[len(final_lst)-2]
+    index=3
+    for i in range(3,len(final_lst)-2,2):
+        if(prior_lst[i]<=number-2):
+            revised[index]=final_lst[i]
+            revised[index-1]=final_lst[i-1]
+            index+=2
     #print(revised)
-    count=1
-    for i in range(3,2*iterator-2,2):
-        for j in range(3,len(final_lst)-2,2):
-            if(prior_lst[j]==count):
-                revised[i-1]=final_lst[j-1]
-                revised[i]=final_lst[j]
-                count+=1
-                break
-    
-    print(revised)
     return revised 
 
 #temp=['a',{'a':10,'v':22},'c',{'l':10,'t':9},'b',{'a':1,'r':1},'g',{'k':10,'o':9},'b',{'h':19,'l':666}]
@@ -183,7 +179,7 @@ def Newssearch(searchword,final_list):
     result=[]
     for i in final_list:
         if(count%2==0): #날짜 
-            print(i)
+            #print(i)
             start=i[:10]
             end=i[11:]
         else:
@@ -199,20 +195,23 @@ def Newssearch(searchword,final_list):
     return result
     
 
-def GetNews(keyword,start):
-    
+def GetNews(keyword,start,option):
+    '''
+    option의 갯수만큼 타임라인 출력
+    -1이면 전체 리턴
+    '''
     keywordlist=keywordextract(keyword,start)    #모든 날짜와 날짜 별 키워드+가중치들이 있는 리스트
     
     timeline=phasedivide(keyword,keywordlist)    #기간을 나눌 인덱스
     final_list=keyword_Integrate(timeline,keywordlist)
-    prior_lst=prior(final_list)
-    inputlst=converter(prior_lst,final_list,10)
-    print("passed")
-    article=Newssearch(keyword, inputlst)
-    
-    
+    if (option!=-1):
+        prior_lst=prior(final_list)
+        inputlst=converter(prior_lst,final_list,option)
+        article=Newssearch(keyword, inputlst)
+    else:
+        article=Newssearch(keyword, final_list)
     return article
-
+    
 
     
    

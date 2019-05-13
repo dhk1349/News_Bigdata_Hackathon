@@ -35,7 +35,7 @@ def search(start, end,word):
                         "sort":{"_score":"desc"},
                         "hilight":300,
                         "return_from":0,
-                        "return_size":5
+                        "return_size":2
                 
             }
         }
@@ -43,6 +43,7 @@ def search(start, end,word):
     searcharticle=searcharticle.json()['return_object']['documents']
     contentresult=[]
     print("==============================================================================================")
+    print("기간: ",start," ~ ",end)
     print("키워드 : ",word[1],",",word[2],", ",word[3],"\n")
     for i in searcharticle:
         del i['news_id']
@@ -56,6 +57,7 @@ def search(start, end,word):
         x1=x1+"\n"+x2+"\n\n"
         contentresult.append(x1)
     print("==============================================================================================")
+    
     return contentresult
 
     
